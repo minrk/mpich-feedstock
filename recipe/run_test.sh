@@ -14,11 +14,10 @@ mpif90 -show
 
 command -v mpiexec
 
-pushd $RECIPE_DIR/tests
+pushd tests
 
 function mpi_exec() {
-  # use pipes to avoid O_NONBLOCK issues on stdin, stdout
-  mpiexec -launcher fork $@ 2>&1 </dev/null | cat
+  mpiexec -launcher fork $@
 }
 
 mpicc helloworld.c -o helloworld_c
@@ -32,5 +31,3 @@ mpi_exec -n 4 ./helloworld_f
 
 mpif90 helloworld.f90 -o helloworld_f90
 mpi_exec -n 4 ./helloworld_f90
-
-popd
